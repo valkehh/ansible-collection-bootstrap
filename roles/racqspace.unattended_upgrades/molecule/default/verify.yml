@@ -1,0 +1,52 @@
+---
+- name: Verify
+  hosts: instance*
+  tasks:
+    - name: APT::Periodic::Enable
+      ansible.builtin.lineinfile:
+        dest: /etc/apt/apt.conf.d/20auto-upgrades
+        line: APT::Periodic::Enable "1";
+      check_mode: true
+      register: unattended_upgrades_verify
+      failed_when: unattended_upgrades_verify.changed
+
+    - name: APT::Periodic::Unattended-Upgrade
+      ansible.builtin.lineinfile:
+        dest: /etc/apt/apt.conf.d/20auto-upgrades
+        line: APT::Periodic::Unattended-Upgrade "1";
+      check_mode: true
+      register: unattended_upgrades_verify
+      failed_when: unattended_upgrades_verify.changed
+
+    - name: APT::Periodic::Update-Package-Lists
+      ansible.builtin.lineinfile:
+        dest: /etc/apt/apt.conf.d/20auto-upgrades
+        line: APT::Periodic::Update-Package-Lists "1";
+      check_mode: true
+      register: unattended_upgrades_verify
+      failed_when: unattended_upgrades_verify.changed
+
+    - name: APT::Periodic::AutocleanInterval
+      ansible.builtin.lineinfile:
+        dest: /etc/apt/apt.conf.d/20auto-upgrades
+        line: APT::Periodic::AutocleanInterval "7";
+      check_mode: true
+      register: unattended_upgrades_verify
+      failed_when: unattended_upgrades_verify.changed
+
+    - name: Unattended-Upgrade::Origins-Pattern
+      ansible.builtin.lineinfile:
+        dest: /etc/apt/apt.conf.d/50unattended-upgrades
+        line: Unattended-Upgrade::Origins-Pattern {
+      check_mode: true
+      register: unattended_upgrades_verify
+      failed_when: unattended_upgrades_verify.changed
+
+    - name: Unattended-Upgrade::Package-Blacklist
+      ansible.builtin.lineinfile:
+        dest: /etc/apt/apt.conf.d/50unattended-upgrades
+        line: Unattended-Upgrade::Package-Blacklist {
+      check_mode: true
+      register: unattended_upgrades_verify
+      failed_when: unattended_upgrades_verify.changed
+...

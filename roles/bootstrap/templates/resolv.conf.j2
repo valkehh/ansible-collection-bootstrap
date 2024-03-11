@@ -1,0 +1,10 @@
+{% if host_dns_servers is defined -%}
+{% for dns_server in host_dns_servers -%}
+nameserver {{ dns_server }}
+{% endfor %}
+{% endif %}
+{% if host_dns_search is defined -%}
+{% for dns_search in host_dns_search -%}
+search {{ dns_search }}
+{% endfor %}
+{% endif %}

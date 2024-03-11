@@ -1,0 +1,6 @@
+---
+- name: Converge
+  hosts: instance*
+  roles:
+    - role: racqspace.unattended_upgrades
+...

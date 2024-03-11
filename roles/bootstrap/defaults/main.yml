@@ -1,0 +1,92 @@
+---
+# SYSTEMD DNS
+systemd_resolved_servers:
+  - 100.106.245.142
+  - 100.69.227.14
+  - 100.123.117.137
+  - 100.79.34.131
+systemd_resolved_fallback_servers:
+  - 1.1.1.1
+  - 8.8.8.8
+systemd_resolved_domains:
+  - larnet.eu
+systemd_resolved_llmnr: false
+systemd_resolved_multicast_dns: false
+systemd_resolved_dnssec: 'false'
+systemd_resolved_dns_over_tls: 'no'
+systemd_resolved_cache: yes
+systemd_resolved_dns_stub_listener: 'yes'
+systemd_resolved_read_etc_hosts: yes
+
+# TIME
+ntp_enabled: true
+ntp_timezone: "Europe/Stockholm"
+ntp_package: chrony
+ntp_daemon: chrony
+ntp_config_file: /etc/chrony/chrony.conf
+ntp_manage_config: true
+ntp_driftfile: /var/lib/chrony/chrony.drift
+ntp_area: "se"
+ntp_servers:
+  - "0{{ '.' + ntp_area if ntp_area else '' }}.pool.ntp.org iburst"
+  - "1{{ '.' + ntp_area if ntp_area else '' }}.pool.ntp.org iburst"
+  - "2{{ '.' + ntp_area if ntp_area else '' }}.pool.ntp.org iburst"
+  - "3{{ '.' + ntp_area if ntp_area else '' }}.pool.ntp.org iburst"
+
+# LOCALE
+locales_present: ["en_GB.UTF-8", "sv_SE.UTF-8", "en_US.UTF-8"]
+locales_default:
+  lc_all:
+  lang: "en_US.UTF-8"
+  lc_address: "en_US.UTF-8"
+  lc_collate: "en_US.UTF-8"
+  lc_ctype: "en_US.UTF-8"
+  lc_identification: "en_US.UTF-8"
+  lc_measurement: "sv_SE.UTF-8"
+  lc_messages: "en_US.UTF-8"
+  lc_monetary: "en_US.UTF-8"
+  lc_name: "en_US.UTF-8"
+  lc_numeric: "en_US.UTF-8"
+  lc_time: "sv_SE.UTF-8"
+
+# SNAPD
+snapd_purge: true
+snapd_state: stopped
+snapd_enabled: false
+snapd_services:
+  - snapd.apparmor.service
+  - snapd.autoimport.service
+  - snapd.core-fixup.service
+  - snapd.recovery-chooser-trigger.service
+  - snapd.seeded.service
+  - snapd.service
+  - snapd.snap-repair.timer
+  - snapd.socket
+  - snapd.system-shutdown.service
+snapd_files:
+  - /snap
+  - /var/snap
+  - /var/lib/snapd
+  - /var/cache/snapd
+  - /run/snapd-snap.socket
+  - /run/snapd.socket
+  - /etc/apt/apt.conf.d/20snapd.conf
+snapd_block_packages:
+  - snapd
+  - snap-confine
+  - ubuntu-core-snapd-units
+  - ubuntu-core-launcher
+  - libsnapd-glib1
+  - gir1.2-snapd-1
+  - libsnapd-qt1
+  - snapd-xdg-open
+  - qml-module-snapd
+
+# UNATTENDED UPGRADES
+unattended_upgrades_mail: "emil@jacero.se"
+unattended_upgrades_origins_patterns:
+  - "origin=${distro_id},archive=${distro_codename}"
+  - "origin=${distro_id},archive=${distro_codename}-security"
+  # - 'origin=${distro_id},archive=${distro_codename}-updates'
+unattended_upgrades_package_blacklist:
+  - apache2

@@ -1,0 +1,24 @@
+# meta file
+---
+galaxy_info:
+  author: oefenweb
+  role_name: locales
+  company: Oefenweb.nl B.V.
+  description: Set locales on Debian-like systems
+  license: MIT
+  min_ansible_version: 2.10.0
+  platforms:
+    - name: Ubuntu
+      versions:
+        - xenial
+        - bionic
+        - focal
+        - jammy
+    - name: Debian
+      versions:
+        - jessie
+        - stretch
+        - buster
+  galaxy_tags:
+    - system
+dependencies: []

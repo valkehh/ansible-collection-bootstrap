@@ -1,0 +1,70 @@
+---
+
+- name: shutdown services, sockets and timers
+  service:
+    name: "{{ item }}"
+    state: "{{ snapd_state }}"
+    enabled: "{{ snapd_enabled }}"
+  failed_when: false
+  loop:
+    "{{ snapd_services }}"
+
+- name: purge all these bullshit
+  block:
+    - name: debian based
+      block:
+
+        - name: make sure python3-apt is installed
+          package:
+            name:
+              - python3-apt
+            state: present
+
+        - name: remove snapd packages (debian)
+          package:
+            name: "{{ snapd_block_packages }}"
+            state: absent
+            purge: true
+
+        - name: block
+          block:
+            - name: block later installations of snapd
+              template:
+                src: apt/preferences.d/snapd.pref.j2
+                dest: /etc/apt/preferences.d/snapd.pref
+                mode: 0644
+
+            - name: clean apt cache
+              ansible.builtin.command: apt-get clean
+              register: apt_clean
+              changed_when: apt_clean.rc != 0
+              failed_when: apt_clean.rc != 0
+              become: true
+
+            - name: update package cache
+              package:
+                update_cache: true
+              become: true
+
+          when:
+            - snapd_block_packages is defined
+            - snapd_block_packages | count > 0
+      when:
+        - ansible_os_family | lower == 'debian'
+
+    - name: remove snapd packages (other)
+      package:
+        name: "{{ snapd_block_packages }}"
+        state: absent
+      when:
+        - ansible_os_family | lower != 'debian'
+
+    - name: remove snapd-related directories
+      file:
+        path: "{{ item }}"
+        state: absent
+      loop: "{{ snapd_files }}"
+      loop_control:
+        label: "{{ item }}"
+  when:
+    - snapd_purge

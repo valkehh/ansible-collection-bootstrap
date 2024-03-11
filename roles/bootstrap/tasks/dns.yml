@@ -1,0 +1,68 @@
+---
+
+- name: Configure DNS
+  block:
+    - name: "Disable systemd-resolved"
+      service:
+        name: systemd-resolved
+        state: stopped
+        enabled: false
+      become: true
+
+    - name: Write /etc/resolv.conf
+      ansible.builtin.template:
+        src: templates/resolv.conf.j2
+        dest: /etc/resolv.conf
+        owner: root
+        group: root
+        mode: '0644'
+      become: true
+  when:
+    - inventory_hostname in groups['dns_secondary']|default([]) or inventory_hostname in groups['dns_primary']|default([])
+
+- name: Configure DNS
+  block:
+    - name: install systemd
+      apt:
+        name: systemd
+        state: present
+      become: true
+
+    - name: configure systemd-resolved
+      template:
+        src: resolved.conf.j2
+        dest: /etc/systemd/resolved.conf
+        owner: root
+        group: root
+        mode: 0644
+      register: __systemd_resolved_configuration
+      become: true
+
+    - name: enable systemd-resolved service and assure it is started
+      systemd:
+        name: systemd-resolved
+        enabled: yes
+        state: >-
+          {{
+            __systemd_resolved_configuration.changed |
+              default(False) |
+              ternary("restarted", "started")
+          }}
+      become: true
+
+    - stat:
+        path: "/etc/resolv.conf"
+      register: links
+
+    - name: Remove file /etc/resolv.conf
+      ansible.builtin.file:
+        path: "/etc/resolv.conf"
+        state: absent
+      when: links.stat.islnk is defined and not links.stat.islnk
+
+    - name: link /etc/resolv.conf to stub
+      file:
+        src: /run/systemd/resolve/stub-resolv.conf
+        dest: /etc/resolv.conf
+        state: link
+      become: true
