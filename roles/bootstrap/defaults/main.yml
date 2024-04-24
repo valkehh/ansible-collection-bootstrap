@@ -12,10 +12,10 @@ systemd_resolved_domains:
   - larnet.eu
 systemd_resolved_llmnr: false
 systemd_resolved_multicast_dns: false
-systemd_resolved_dnssec: 'false'
-systemd_resolved_dns_over_tls: 'no'
+systemd_resolved_dnssec: "false"
+systemd_resolved_dns_over_tls: "no"
 systemd_resolved_cache: yes
-systemd_resolved_dns_stub_listener: 'yes'
+systemd_resolved_dns_stub_listener: "yes"
 systemd_resolved_read_etc_hosts: yes
 
 # TIME
@@ -83,7 +83,7 @@ snapd_block_packages:
   - qml-module-snapd
 
 # UNATTENDED UPGRADES
-unattended_upgrades_mail: "emil@jacero.se"
+unattended_upgrades_mail: "albin_berg@yahoo.com"
 unattended_upgrades_origins_patterns:
   - "origin=${distro_id},archive=${distro_codename}"
   - "origin=${distro_id},archive=${distro_codename}-security"

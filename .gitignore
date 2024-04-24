@@ -1,0 +1,47 @@
+# Python: Byte-compiled files
+__pycache__/
+*.pyc
+
+# Python: Distribution \ packaging
+*.egg-info/
+
+# Python: coverage reports
+.coverage*
+htmlcov/
+coverage.xml
+
+# Project directories
+/build/
+/dist/
+
+# Other
+*.swp
+*.retry
+.idea/
+.develop/
+.cache/
+.pytest_cache/
+*.log
+galaxy/celerybeat-schedule
+known_hosts
+provisioning/library/
+rpm-build/
+node_modules/
+nohup.out
+provisioning/ec2_inventory
+.vagrant
+/Vagrantfile
+/logs
+/var
+galaxy.min.css
+.DS_Store
+ansible-deployment/
+yarn-error.log
+
+# NOTE(cutwater): Temporary adding developer environment related files
+# to .gitignore, however these files should not be included in project
+# .gitignore. All IDE, developer related files (not related to project
+# itself) should be included in global ignore file. See `git help config`
+# option `core.excludesFile` for more details.
+*.sublime-project
+*.sublime-workspace
