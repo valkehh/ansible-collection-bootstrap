@@ -2,18 +2,17 @@
 #- name: DNS
 #  include_tasks: dns.yml
 
-#- name: NTP
-#  include_role:
-#    name: geerlingguy.ntp
-
-#- name: YEET SNAP
-#  include_tasks: snap.yml
-
-- name: Docker setup
+- name: NTP
   include_role:
-    name: container
-  when:
-    - inventory_hostname in groups['container_host']|default([])
+    name: geerlingguy.ntp
+
+- name: YEET SNAP
+  include_tasks: snap.yml
+#- name: Docker setup
+#  include_role:
+#    name: container
+#  when:
+#    - inventory_hostname in groups['container_host']|default([])
 #- name: Node_exporter setup
 #  include_role:
 #    name: geerlingguy.node_exporter

@@ -11,13 +11,12 @@
   become: yes
   gather_facts: true
   roles:
-    - install_docker
-    #  - bootstrap
-    #- geerlingguy.docker
-    #- { role: "geerlingguy.node_exporter", tags: "test" }
-    #- geerlingguy.ntp
-    #- geerlingguy.pip
-    #- geerlingguy.postgresql
+    - bootstrap
+    - geerlingguy.docker
+    - { role: "geerlingguy.node_exporter", tags: "test" }
+    - geerlingguy.ntp
+    - geerlingguy.pip
+    - geerlingguy.postgresql
   #   - { role: "k3s", tags: "test2", become: yes }
   #   - oefenweb.locales
   #   - racqspace.unattended_upgrades
