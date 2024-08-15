@@ -1,19 +1,16 @@
 ---
-
 - name: shutdown services, sockets and timers
   service:
     name: "{{ item }}"
     state: "{{ snapd_state }}"
     enabled: "{{ snapd_enabled }}"
   failed_when: false
-  loop:
-    "{{ snapd_services }}"
+  loop: "{{ snapd_services }}"
 
 - name: purge all these bullshit
   block:
     - name: debian based
       block:
-
         - name: make sure python3-apt is installed
           package:
             name:
